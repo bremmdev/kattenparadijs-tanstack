@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Dancing Script";
+  src: url("assets/fonts/dancingscript-variablefont.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("assets/fonts/poppins-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("assets/fonts/poppins-medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("assets/fonts/poppins-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-*: initial;
+  --font-handwriting: "Dancing Script", cursive;
+  --font-sans: "Poppins", sans-serif;
+
+  --breakpoint-*: initial;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 960px;
+  --breakpoint-lg: 1200px;
+
+  --spacing-page-content: 90rem;
+
+  --color-theme: oklch(64.5% 0.246 16.439); /* rose-500 */
+  --color-theme-light: oklch(81% 0.117 11.638); /* rose-300 */
+  --color-theme-lightest: oklch(96.9% 0.015 12.422); /* rose-50 */
+
+  --inset-1\/8: 12.5%;
+
+  --animate-fade: fade 0.5s ease-in-out;
+
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+
+  @keyframes fade {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+button {
+  cursor: pointer;
+}
+
+.disable-viewtransition {
+  view-transition-name: none !important;
+}
+
+::view-transition-new(.slide-down) {
+  animation: slide-down 0.3s ease-out;
+}
+
+::view-transition-old(.slide-up) {
+  animation: slide-up 0.3s ease-out;
+}
+
+::view-transition-new(.fade-in) {
+  animation: fade-in 0.5s ease-out;
+}
+
+::view-transition-new(.fade-in-fast) {
+  animation: fade-in 0.3s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    height: 100%;
+    opacity: 1;
+  }
+  25% {
+    opacity: 0;
+  }
+  100% {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+  50% {
+    height: 50%;
+    opacity: 0;
+  }
+  100% {
+    height: 100%;
+    opacity: 1;
+  }
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 0.7em;
+}
+
+@media (max-width: 1024px) {
+  ::-webkit-scrollbar {
+    width: 0.5em;
+  }
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background-image: linear-gradient(
+    to bottom,
+    oklch(89.2% 0.058 10.001) 0% /* rose-200 */,
+    oklch(71.2% 0.194 13.428) 100% /* rose-400 */
+  );
+}

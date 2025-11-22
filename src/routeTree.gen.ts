@@ -10,11 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VideosRouteImport } from './routes/videos'
-import { Route as NorrisRouteImport } from './routes/norris'
-import { Route as MoosRouteImport } from './routes/moos'
-import { Route as FlynnRouteImport } from './routes/flynn'
-import { Route as DaantjeRouteImport } from './routes/daantje'
-import { Route as AllRouteImport } from './routes/all'
+import { Route as CatRouteImport } from './routes/$cat'
 import { Route as IndexRouteImport } from './routes/index'
 
 const VideosRoute = VideosRouteImport.update({
@@ -22,29 +18,9 @@ const VideosRoute = VideosRouteImport.update({
   path: '/videos',
   getParentRoute: () => rootRouteImport,
 } as any)
-const NorrisRoute = NorrisRouteImport.update({
-  id: '/norris',
-  path: '/norris',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MoosRoute = MoosRouteImport.update({
-  id: '/moos',
-  path: '/moos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FlynnRoute = FlynnRouteImport.update({
-  id: '/flynn',
-  path: '/flynn',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DaantjeRoute = DaantjeRouteImport.update({
-  id: '/daantje',
-  path: '/daantje',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AllRoute = AllRouteImport.update({
-  id: '/all',
-  path: '/all',
+const CatRoute = CatRouteImport.update({
+  id: '/$cat',
+  path: '/$cat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -55,62 +31,31 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/all': typeof AllRoute
-  '/daantje': typeof DaantjeRoute
-  '/flynn': typeof FlynnRoute
-  '/moos': typeof MoosRoute
-  '/norris': typeof NorrisRoute
+  '/$cat': typeof CatRoute
   '/videos': typeof VideosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/all': typeof AllRoute
-  '/daantje': typeof DaantjeRoute
-  '/flynn': typeof FlynnRoute
-  '/moos': typeof MoosRoute
-  '/norris': typeof NorrisRoute
+  '/$cat': typeof CatRoute
   '/videos': typeof VideosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/all': typeof AllRoute
-  '/daantje': typeof DaantjeRoute
-  '/flynn': typeof FlynnRoute
-  '/moos': typeof MoosRoute
-  '/norris': typeof NorrisRoute
+  '/$cat': typeof CatRoute
   '/videos': typeof VideosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/all'
-    | '/daantje'
-    | '/flynn'
-    | '/moos'
-    | '/norris'
-    | '/videos'
+  fullPaths: '/' | '/$cat' | '/videos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/all' | '/daantje' | '/flynn' | '/moos' | '/norris' | '/videos'
-  id:
-    | '__root__'
-    | '/'
-    | '/all'
-    | '/daantje'
-    | '/flynn'
-    | '/moos'
-    | '/norris'
-    | '/videos'
+  to: '/' | '/$cat' | '/videos'
+  id: '__root__' | '/' | '/$cat' | '/videos'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AllRoute: typeof AllRoute
-  DaantjeRoute: typeof DaantjeRoute
-  FlynnRoute: typeof FlynnRoute
-  MoosRoute: typeof MoosRoute
-  NorrisRoute: typeof NorrisRoute
+  CatRoute: typeof CatRoute
   VideosRoute: typeof VideosRoute
 }
 
@@ -123,39 +68,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VideosRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/norris': {
-      id: '/norris'
-      path: '/norris'
-      fullPath: '/norris'
-      preLoaderRoute: typeof NorrisRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/moos': {
-      id: '/moos'
-      path: '/moos'
-      fullPath: '/moos'
-      preLoaderRoute: typeof MoosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/flynn': {
-      id: '/flynn'
-      path: '/flynn'
-      fullPath: '/flynn'
-      preLoaderRoute: typeof FlynnRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/daantje': {
-      id: '/daantje'
-      path: '/daantje'
-      fullPath: '/daantje'
-      preLoaderRoute: typeof DaantjeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/all': {
-      id: '/all'
-      path: '/all'
-      fullPath: '/all'
-      preLoaderRoute: typeof AllRouteImport
+    '/$cat': {
+      id: '/$cat'
+      path: '/$cat'
+      fullPath: '/$cat'
+      preLoaderRoute: typeof CatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -170,11 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AllRoute: AllRoute,
-  DaantjeRoute: DaantjeRoute,
-  FlynnRoute: FlynnRoute,
-  MoosRoute: MoosRoute,
-  NorrisRoute: NorrisRoute,
+  CatRoute: CatRoute,
   VideosRoute: VideosRoute,
 }
 export const routeTree = rootRouteImport

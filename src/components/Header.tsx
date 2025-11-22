@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import Avatars from "@/components/Cat/Avatars";
-import logo from "@public/logo.svg";
+import logo from "@/assets/logo.svg";
 
 const Header = () => {
   return (

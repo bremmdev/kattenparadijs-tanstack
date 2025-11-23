@@ -1,16 +1,25 @@
 {
-  "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "kattenparadijs-tanstack",
-  "compatibility_date": "2025-09-02",
-  "compatibility_flags": ["nodejs_compat_v2"],
-  "main": "./src/server.ts",
-  "observability": {
-    "enabled": true,
-  },
-  "routes": [
-    {
-      "pattern": "kattenparadijs.bremmdev.me",
-      "custom_domain": true,
-    },
-  ],
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "kattenparadijs-tanstack",
+	"compatibility_date": "2025-09-02",
+	"compatibility_flags": [
+		"nodejs_compat_v2"
+	],
+	"main": "./src/server.ts",
+	"observability": {
+		"enabled": true,
+	},
+	"routes": [
+		{
+			"pattern": "kattenparadijs.bremmdev.me",
+			"custom_domain": true,
+		},
+	],
+	"kv_namespaces": [
+		{
+			"binding": "cache",
+			"id": "2a96db5ec88246688ba135b1d8c61f98",
+			"remote": true
+		}
+	],
 }

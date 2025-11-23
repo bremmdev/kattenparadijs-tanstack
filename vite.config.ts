@@ -8,6 +8,11 @@ import { nitro } from "nitro/vite";
 import { cloudflare } from "@cloudflare/vite-plugin";
 
 const config = defineConfig({
+  build: {
+    rollupOptions: {
+      external: ["cloudflare:workers"],
+    },
+  },
   plugins: [
     devtools(),
     nitro(),

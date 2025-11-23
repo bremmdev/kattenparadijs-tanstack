@@ -2,7 +2,7 @@ import { createClient } from "@sanity/client";
 
 export const config = {
   dataset: "production",
-  projectId: process.env.SANITY_PROJECT_ID,
+  projectId: "e991dsae",
   apiVersion: "2021-08-11", // or today's date for latest
   /**
    * Set useCdn to `false` if your application require the freshest possible

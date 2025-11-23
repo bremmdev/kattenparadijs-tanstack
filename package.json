@@ -29,6 +29,7 @@
     "lucide-react": "^0.544.0",
     "nitro": "latest",
     "react": "^19.2.0",
+    "react-confetti": "^6.4.0",
     "react-dom": "^19.2.0",
     "tailwindcss": "^4.1.17",
     "vite-tsconfig-paths": "^5.1.4"

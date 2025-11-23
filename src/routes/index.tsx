@@ -5,10 +5,10 @@ import { createServerFn } from "@tanstack/react-start";
 import Gallery from "@/components/Gallery/Gallery";
 import { env } from "cloudflare:workers";
 
-export const fetchImagesFromSanity = createServerFn({
+export const fetchIndexImagesFromSanity = createServerFn({
   method: "GET",
 })
-  .inputValidator((data: { page: number; cat?: string }) => data)
+  .inputValidator((data: { page: number }) => data)
   .handler(async ({ data }) => {
     const { page } = data;
 
@@ -37,7 +37,7 @@ export const Route = createFileRoute("/")({
     await context.queryClient.prefetchInfiniteQuery({
       queryKey: ["images"],
       queryFn: ({ pageParam = 0 }) =>
-        fetchImagesFromSanity({ data: { page: pageParam } }),
+        fetchIndexImagesFromSanity({ data: { page: pageParam } }),
       staleTime: Infinity,
       initialPageParam: 0,
     });

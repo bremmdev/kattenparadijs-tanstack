@@ -1,6 +1,7 @@
 import { ImageWithDimensions } from "@/types/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { fetchImagesFromSanity } from "@/routes/index";
+import { fetchIndexImagesFromSanity } from "@/routes/index";
+import { fetchCatImagesFromSanity } from "@/routes/$cat";
 
 export const PAGE_SIZE = 48;
 
@@ -14,8 +15,14 @@ export const useImages = (cat?: string) => {
 
   return useInfiniteQuery<ImagePageType>({
     queryKey: queryKey,
-    queryFn: ({ pageParam = 0 }) =>
-      fetchImagesFromSanity({ data: { page: pageParam as number } }),
+    queryFn: async ({ pageParam = 0 }) =>
+      cat
+        ? await fetchCatImagesFromSanity({
+            data: { page: pageParam as number, cat },
+          })
+        : await fetchIndexImagesFromSanity({
+            data: { page: pageParam as number },
+          }),
     getNextPageParam: (lastPage, pages) => {
       if (lastPage.images.length < PAGE_SIZE) {
         return undefined;

@@ -5,7 +5,10 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import {
+  ReactQueryDevtools,
+  ReactQueryDevtoolsPanel,
+} from "@tanstack/react-query-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import Header from "@/components/Header";
 import appCss from "../styles.css?url";
@@ -68,7 +71,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <main className="max-w-page-content mx-auto py-6 px-8 sm:px-12 sm:py-8">
           {children}
         </main>
-        <TansTackDevTools />
+        {/* <TansTackDevTools /> */}
+        <ReactQueryDevtoolsPanel />
         <Scripts />
       </body>
     </html>

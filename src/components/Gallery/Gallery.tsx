@@ -83,7 +83,9 @@ const Gallery = ({ cat, isDetail }: Props) => {
           <img
             src={selectedImage.url}
             alt="kat"
-            className="object-contain max-w-full max-h-full"
+            width={selectedImage.width}
+            height={selectedImage.height}
+            className="object-contain max-h-full max-w-full"
           />
         </Modal>
       )}

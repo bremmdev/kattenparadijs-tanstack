@@ -12,7 +12,7 @@ const FetchMoreBtn = (props: Props) => {
   return (
     <div className="flex justify-center my-6">
       <button
-        className="flex gap-2 cursor-pointer rounded-xl text-slate-950 border-2 border-slate-600 bg-white py-[10px] px-5 transition-colors duration-300 hover:bg-slate-50 md:text-base"
+        className="flex gap-2 cursor-pointer rounded-xl text-slate-950 border-2 border-slate-600 bg-white py-2.5 px-5 transition-colors duration-300 hover:bg-slate-50 md:text-base"
         onClick={() => fetchNextPage()}
         disabled={isFetching}
       >

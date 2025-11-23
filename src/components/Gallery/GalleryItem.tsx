@@ -1,6 +1,7 @@
 import React from "react";
 import { ImageWithDimensions } from "@/types/types";
 import ExtraInfo from "./ExtraInfo";
+import { Image } from "@unpic/react";
 
 type Props = {
   img: ImageWithDimensions;
@@ -38,14 +39,13 @@ const GalleryItem = (props: Props) => {
       )}
 
       <button onClick={handleImageClick}>
-        <img
+        <Image
           src={img.url}
           width={img.width / 2}
           height={img.height / 2}
           alt="kat"
           className="rounded-xl"
-          //   blurDataURL={img.blurData}
-          //   priority={hasPriority}
+          priority={hasPriority}
           fetchPriority={isLCP ? "high" : "auto"}
         />
       </button>

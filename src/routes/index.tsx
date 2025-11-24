@@ -33,6 +33,7 @@ export const fetchIndexImagesFromSanity = createServerFn({
   });
 
 export const Route = createFileRoute("/")({
+  component: CatsPage,
   loader: async ({ context }) => {
     await context.queryClient.prefetchInfiniteQuery({
       queryKey: ["images"],
@@ -42,7 +43,6 @@ export const Route = createFileRoute("/")({
       initialPageParam: 0,
     });
   },
-  component: CatsPage,
 });
 
 function CatsPage() {

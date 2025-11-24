@@ -2,11 +2,27 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { imageGroqQuery, catGroqQuery } from "@/utils/queries";
 import { sanityClient } from "@/utils/sanity";
 import { createServerFn } from "@tanstack/react-start";
-import { env } from "cloudflare:workers";
 import CatOverview from "@/components/Cat/CatOverview";
 import { Cat } from "@/types/types";
+import { env } from "cloudflare:workers";
 
 const ALLOWED_ROUTES = ["all", "daantje", "flynn", "moos", "norris"];
+
+export const fetchCatsFromSanity = createServerFn({
+  method: "GET",
+}).handler(async () => {
+  // Check if payload for cats is cached in KV
+  const cached = await env.cache.get("sanity:cats");
+  if (cached) {
+    return JSON.parse(cached) as Array<Cat>;
+  }
+
+  // CACHE MISS: Fetch from Sanity and cache in KV
+  const cats: Array<Cat> = (await sanityClient.fetch(catGroqQuery)) ?? [];
+
+  await env.cache.put("sanity:cats", JSON.stringify(cats));
+  return cats;
+});
 
 export const fetchCatImagesFromSanity = createServerFn({
   method: "GET",
@@ -61,7 +77,7 @@ export const Route = createFileRoute("/$cat")({
     });
 
     //query for cats
-    const cats: Array<Cat> = (await sanityClient.fetch(catGroqQuery)) ?? [];
+    const cats = await fetchCatsFromSanity();
 
     //get cat based on query param
     const selectedCat = cats.find((c) => c.name === cat) || null;

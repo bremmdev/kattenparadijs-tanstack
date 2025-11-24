@@ -17,6 +17,8 @@ export function getRouter() {
     },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
+    defaultViewTransition: true,
+    defaultPreload: "intent",
     defaultNotFoundComponent: () => <NotFound />,
   });
 

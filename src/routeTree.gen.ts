@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as VideosRouteImport } from './routes/videos'
 import { Route as CatRouteImport } from './routes/$cat'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiRevalidateRouteImport } from './routes/api/revalidate'
 
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
@@ -28,35 +29,44 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiRevalidateRoute = ApiRevalidateRouteImport.update({
+  id: '/api/revalidate',
+  path: '/api/revalidate',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$cat': typeof CatRoute
   '/videos': typeof VideosRoute
+  '/api/revalidate': typeof ApiRevalidateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$cat': typeof CatRoute
   '/videos': typeof VideosRoute
+  '/api/revalidate': typeof ApiRevalidateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$cat': typeof CatRoute
   '/videos': typeof VideosRoute
+  '/api/revalidate': typeof ApiRevalidateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$cat' | '/videos'
+  fullPaths: '/' | '/$cat' | '/videos' | '/api/revalidate'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$cat' | '/videos'
-  id: '__root__' | '/' | '/$cat' | '/videos'
+  to: '/' | '/$cat' | '/videos' | '/api/revalidate'
+  id: '__root__' | '/' | '/$cat' | '/videos' | '/api/revalidate'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CatRoute: typeof CatRoute
   VideosRoute: typeof VideosRoute
+  ApiRevalidateRoute: typeof ApiRevalidateRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/revalidate': {
+      id: '/api/revalidate'
+      path: '/api/revalidate'
+      fullPath: '/api/revalidate'
+      preLoaderRoute: typeof ApiRevalidateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CatRoute: CatRoute,
   VideosRoute: VideosRoute,
+  ApiRevalidateRoute: ApiRevalidateRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

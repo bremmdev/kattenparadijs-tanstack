@@ -1,90 +1,76 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { env } from "cloudflare:workers";
 
-import { isValidSignature, SIGNATURE_HEADER_NAME } from "@sanity/webhook";
+import {
+  assertValidSignature,
+  isSignatureError,
+  SIGNATURE_HEADER_NAME,
+} from "@sanity/webhook";
 
-const secret = env.SANITY_WEBHOOK_SECRET as string;
+// Manually call assertValidSignature as validateSignature is stubbed out in Cloudflare Workers environment
+async function safeIsValidSignature(
+  payload: string,
+  signature: string,
+  secret: string
+) {
+  try {
+    await assertValidSignature(payload, signature, secret);
+    return true;
+  } catch (err) {
+    if (isSignatureError(err)) return false;
+    throw err;
+  }
+}
+
+const secret = env.SANITY_WEBHOOK_SECRET;
 
 export const Route = createFileRoute("/api/revalidate")({
   server: {
     handlers: {
       POST: async ({ request }) => {
         //validate signature from sanity
-        // const signature = request.headers.get(SIGNATURE_HEADER_NAME) || "";
-        // const body = await request.text();
-        // console.log("Received body:", body);
+        const signature = request.headers.get(SIGNATURE_HEADER_NAME) || "";
+        const rawBody = await request.text();
 
-        // if (!isValidSignature(body, signature, secret)) {
-        //   console.log("Invalid signature");
-        //   return new Response(JSON.stringify({ message: `Hello World!` }));
-        // }
+        const isValid = await safeIsValidSignature(rawBody, signature, secret);
 
-        console.log("Valid signature");
-        // Process the webhook payload
-        // Note: You would typically parse the body as JSON and handle it accordingly
-        // For demonstration, we will just return a success response
+        if (!isValid) {
+          return new Response("Invalid signature", { status: 401 });
+        }
 
-        return new Response(
-          JSON.stringify({ message: `Hello, World is success!` })
-        );
+        // for validation we need text body, but the actual body is JSON
+        const body = JSON.parse(rawBody);
+        const { _type, cat } = body;
+
+        try {
+          if (!_type || !cat)
+            return Response.json(
+              { message: "Incorrect type" },
+              { status: 400 }
+            );
+
+          switch (_type) {
+            case "catimage":
+              // always revalidate main page when an image is added
+              await env.cache.delete("sanity:index");
+
+              // cat can be "all" or a specific cat name
+              if (cat.length > 1) {
+                await env.cache.delete("sanity:all");
+                return new Response(`Revalidated page for all cats`);
+              }
+
+              // revalidate page for specific cat
+              await env.cache.delete(`sanity:${cat[0]}`);
+              return new Response(`Revalidated page for ${cat[0]}`);
+            case "catvideo":
+              await env.cache.delete("sanity:videos");
+              return new Response(`Revalidated page for videos`);
+          }
+        } catch (err) {
+          return new Response("Error revalidating", { status: 500 });
+        }
       },
     },
   },
 });
-
-// const { isValidSignature, body } = await parseBody<{
-//   _type: string;
-//   cat: string;
-// }>(request, secret);
-
-//     if (!isValidSignature) {
-//       return Response.json(
-//         { success: false, message: "Invalid signature" },
-//         { status: 401 }
-//       );
-//     }
-
-//     try {
-//       if (!body?._type || !body?.cat)
-//         return Response.json({ message: "Incorrect type" });
-
-//       const { _type, cat } = body;
-
-//       switch (_type) {
-//         case "catimage":
-//           // always revalidate main page when an image is added
-//           revalidatePath(`/`);
-
-//           // cat can be "all" or a specific cat name
-//           if (cat.length > 1) {
-//             revalidatePath(`/all`);
-//             return Response.json({
-//               message: `Revalidated page for all cats`,
-//             });
-//           }
-
-//           // revalidate page for specific cat
-//           revalidatePath(`/${cat[0]}`);
-//           return Response.json({
-//             message: `Revalidated page for ${cat[0]}`,
-//           });
-//         case "catvideo":
-//           revalidatePath(`/videos`);
-//           return Response.json({ message: `Revalidated page for videos` });
-//       }
-
-//       return Response.json({ message: "Incorrect type" });
-//     } catch (err) {
-//       // If there was an error, Next.js will continue
-//       // to show the last successfully generated page
-//       return Response.json(
-//         { message: "Error revalidating" },
-//         { status: 500 }
-//       );
-//     }
-
-//     return new Response("Hello, World!");
-//   },
-// },
-// },
-// });

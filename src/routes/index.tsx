@@ -4,6 +4,7 @@ import { sanityClient } from "@/utils/sanity";
 import { createServerFn } from "@tanstack/react-start";
 import Gallery from "@/components/Gallery/Gallery";
 import { env } from "cloudflare:workers";
+import { indexRouteSEO } from "@/utils/meta";
 
 export const fetchIndexImagesFromSanity = createServerFn({
   method: "GET",
@@ -43,8 +44,15 @@ export const Route = createFileRoute("/")({
       initialPageParam: 0,
     });
   },
+  head: () => ({
+    meta: indexRouteSEO,
+  }),
 });
 
 function CatsPage() {
-  return <Gallery cat={null} />;
+  return (
+    <>
+      <Gallery cat={null} />;
+    </>
+  );
 }

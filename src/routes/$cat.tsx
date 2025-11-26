@@ -5,6 +5,7 @@ import { createServerFn } from "@tanstack/react-start";
 import CatOverview from "@/components/Cat/CatOverview";
 import { Cat } from "@/types/types";
 import { env } from "cloudflare:workers";
+import { getCatRouteSEO } from "@/utils/meta";
 
 const ALLOWED_ROUTES = ["all", "daantje", "flynn", "moos", "norris"];
 
@@ -84,6 +85,7 @@ export const Route = createFileRoute("/$cat")({
 
     return { cat: selectedCat };
   },
+  head: ({ params }) => ({ meta: getCatRouteSEO(params.cat) }),
 });
 
 function CatPage() {

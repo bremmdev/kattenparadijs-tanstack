@@ -4,6 +4,7 @@ import { sanityClient } from "@/utils/sanity";
 import { createServerFn } from "@tanstack/react-start";
 import VideosOverview from "@/components/Cat/VideosOverview";
 import { env } from "cloudflare:workers";
+import { videosRouteSEO } from "@/utils/meta";
 
 export const fetchVideosFromSanity = createServerFn({
   method: "GET",
@@ -40,6 +41,9 @@ export const Route = createFileRoute("/videos")({
       initialPageParam: 0,
     });
   },
+  head: () => ({
+    meta: videosRouteSEO,
+  }),
 });
 
 function VideosPage() {

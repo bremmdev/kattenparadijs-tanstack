@@ -6,6 +6,7 @@ import viteTsConfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
 import { nitro } from "nitro/vite";
 import { cloudflare } from "@cloudflare/vite-plugin";
+import { visualizer } from "rollup-plugin-visualizer";
 
 const config = defineConfig({
   build: {
@@ -24,6 +25,7 @@ const config = defineConfig({
     tanstackStart(),
     viteReact(),
     cloudflare({ viteEnvironment: { name: "ssr" } }),
+    // visualizer({ open: true }),
   ],
 });
 

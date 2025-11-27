@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { createServerOnlyFn } from "@tanstack/react-start";
 import { env } from "cloudflare:workers";
 
 import {
@@ -22,7 +23,9 @@ async function safeIsValidSignature(
   }
 }
 
-const secret = env.SANITY_WEBHOOK_SECRET;
+const getSanityWebhookSecret = createServerOnlyFn(
+  () => env.SANITY_WEBHOOK_SECRET
+);
 
 export const Route = createFileRoute("/api/revalidate")({
   server: {
@@ -32,6 +35,7 @@ export const Route = createFileRoute("/api/revalidate")({
         const signature = request.headers.get(SIGNATURE_HEADER_NAME) || "";
         const rawBody = await request.text();
 
+        const secret = await getSanityWebhookSecret();
         const isValid = await safeIsValidSignature(rawBody, signature, secret);
 
         if (!isValid) {
